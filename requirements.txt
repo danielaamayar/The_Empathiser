@@ -6,7 +6,6 @@ streamlit
 ollama
 opencv-python
 transformers
-dorothy-cci
 datasets 
 tiktoken 
 onnxruntime

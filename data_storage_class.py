@@ -28,58 +28,19 @@ class DataStorage:
         df.to_csv(filepath, index=False)
         st.session_state.user_folder = user_folder  
 
-    def save_slider_responses(self, content_type, content_key=None):
+    def save_slider_responses(self, content_name: str, responses: dict):
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-        if content_type == "video":
-            if content_key == "Video 1":
-                data = {
-                    "Timestamp": timestamp,
-                    "Sadness": st.session_state.video1_sadness,
-                    "Upset": st.session_state.video1_upset,
-                    "Bad Action": st.session_state.video1_bad_action,
-                    "Punishment": st.session_state.video1_punishment
-                }
-                filename = "Answers_video1.csv"
-                folder = os.path.join(st.session_state.user_folder, "Video_1")
-            
-            else:  
-                data = {
-                    "Timestamp": timestamp,
-                    "Happy": st.session_state.video2_happy,
-                    "Pleased": st.session_state.video2_pleased,
-                    "Good Action": st.session_state.video2_good_action,
-                    "Encourage": st.session_state.video2_encourage
-                }
-                filename = "Answers_video2.csv"
-                folder = os.path.join(st.session_state.user_folder, "Video_2")
-                
-        elif content_type == "news":
-            if content_key == "News 1":
-                data = {
-                    "Timestamp": timestamp,
-                    "Happy": st.session_state.news1_happy,
-                    "Pleased": st.session_state.news1_pleased,
-                    "Good Action": st.session_state.news1_good_action,
-                    "Encourage": st.session_state.news1_encourage
-                }
-                filename = "Answers_news1.csv"
-                folder = os.path.join(st.session_state.user_folder, "News_1")
-            else:  
-                data = {
-                    "Timestamp": timestamp,
-                    "Intensity": st.session_state.news2_intensity,
-                    "Shock": st.session_state.news2_sadness,
-                    "Concern": st.session_state.news2_upset,
-                    "Anger": st.session_state.news2_bad_action,
-                    "Need for Action": st.session_state.news2_punishment
-                }
-                filename = "Answers_news2.csv"
-                folder = os.path.join(st.session_state.user_folder, "News_2")
         
+        folder_name = content_name.replace(" ", "_")
+        folder = os.path.join(st.session_state.user_folder, folder_name)
         os.makedirs(folder, exist_ok=True)
         
+        data = {"Timestamp": timestamp}
+        data.update(responses)  
+        
+        filename = f"Answers_{folder_name}.csv"
         filepath = os.path.join(folder, filename)
+        
         if not os.path.exists(filepath):
             df = pd.DataFrame(columns=data.keys())
         else:
@@ -87,8 +48,6 @@ class DataStorage:
         
         df = pd.concat([df, pd.DataFrame([data])], ignore_index=True)
         df.to_csv(filepath, index=False)
-        st.success("Thank you!")
-
     
     def save_emotion_plot(self, face_image, probabilities, frame_count, folder, colours):
      

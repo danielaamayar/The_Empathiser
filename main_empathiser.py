@@ -2,6 +2,7 @@ import streamlit as st
 import torch
 import os
 import datetime
+from paths import ProjectPaths
 from session_state_manager import SessionStateManager
 from data_storage_class import DataStorage
 from emotion_detector import EmotionDetector
@@ -9,13 +10,15 @@ from camera_handler import CameraHandler
 
 
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+paths = ProjectPaths()
 session = SessionStateManager()
 session.init_all()
+data_storage = DataStorage(
+    data_collector=str(paths.data_dir)
+)
 detector = EmotionDetector(device=device)
 camera_handler = CameraHandler()
-data_storage = DataStorage(
-    data_collector="/Users/danielaamayarueda/Documents/GitHub/AI-4-Media-Project-Daniela-Amaya/Data" 
-)
+
 colours = {
     "angry": "red",
     "disgust": "green",
@@ -26,13 +29,13 @@ colours = {
     "surprise": "orange"
 }
 
-# Environmental videos to reproduce 
-video_paths = {
-    "Video 1": "Garbage.mov",
-    "Video 2": "/Users/danielaamayarueda/Documents/GitHub/AI-4-Media-Project-Daniela-Amaya/Environmental_videos/Playing_cows.mp4"
+content_paths = {
+    "Video 1": str(paths.video1_path),
+    "Video 2": str(paths.video2_path),
+    "Article 1": str(paths.article1_path),
+    "Article 2": str(paths.article2_path) 
 }
 
-# This function open's the camera input recording and captures the frames 1 * second 
 def detect_emotion(detection_key):
     if not camera_handler.start_camera():
         st.session_state.camera_active = False
@@ -48,7 +51,6 @@ def detect_emotion(detection_key):
         )
     )
 
-# This function handles frames processing 
 def start_emotion_detection(detection_key):
     if not st.session_state.camera_active:
         folder = os.path.join(st.session_state.user_folder, detection_key.replace(" ", "_"))
@@ -61,14 +63,13 @@ def start_emotion_detection(detection_key):
         st.session_state.camera_active = True
         detect_emotion(detection_key)
 
-#This function stops the ongoing emotion detection process and releases the webcam
 def stop_emotion_detection():
     st.session_state.running = False
     st.session_state.camera_active = False
     camera_handler.stop_camera()
 
 def frame_emotion_detection(frame, frame_count, detection_key, data_storage, colours, detector):
-    print(f"Processing frame {frame_count}...")  # Add this line
+    print(f"Processing frame {frame_count}...")  
 
     face, class_probabilities = detector.detect_emotion(frame)
 
@@ -137,7 +138,7 @@ if user_name:
 
     if st.button("Show me the video", key="start_video1"):
         st.session_state.start_pressed_video1 = True 
-        st.video(video_paths["Video 1"])
+        st.video(content_paths["Video 1"])
         start_emotion_detection("Video 1")
     if st.button("Done", key="stop_video1") and st.session_state.camera_active:
         stop_emotion_detection()
@@ -177,9 +178,16 @@ if user_name:
     st.caption("Please press 'Done' once you have read the article.")
 
     if st.button("Show me the article", key="news_article1"):
-        st.session_state.start_pressed_news1 = True  
-        st.markdown("""TEXT"""
-        )
+        st.session_state.start_pressed_news1 = True
+
+        article_path = content_paths["Article 1"]
+        try:
+            with open(article_path, "r", encoding="utf-8") as file:
+                article_text = file.read()
+                st.markdown(article_text)
+        except FileNotFoundError:
+            st.error("Article file not found. Please check the path.")
+
         start_emotion_detection("News 1")  
     if st.button("Done", key="done_news1") and st.session_state.camera_active:
         stop_emotion_detection()
@@ -221,7 +229,7 @@ if user_name:
 
     if st.button("Show me the video", key="start_video2"):
         st.session_state.start_pressed_video2 = True  
-        st.video(video_paths["Video 2"])
+        st.video(content_paths["Video 2"])
         start_emotion_detection("Video 2")
 
     if st.button("Done", key="stop_video2") and st.session_state.camera_active:
@@ -259,10 +267,18 @@ if user_name:
     st.caption("TEXT.")
     st.caption("Please press 'Done' once you have read the article.")
     if st.button("Show me the article", key="news_article2"):
-        st.session_state.start_pressed_news2 = True  
-        st.markdown("""TEXT"""
-    )
+        st.session_state.start_pressed_news2 = True 
+        article2_path = content_paths["Article 2"]
+        try:
+            with open(article2_path, "r", encoding="utf-8") as file:
+                article_text = file.read()
+                st.markdown(article_text)
+        except FileNotFoundError:
+            st.error("Article file not found. Please check the path.")
+            
         start_emotion_detection("News 2")
+
+
     if st.button("Done", key="done_news2") and st.session_state.camera_active:
         stop_emotion_detection()
 
