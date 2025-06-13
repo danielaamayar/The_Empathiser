@@ -48,9 +48,8 @@ content_paths = {
     "Article 2": str(paths.article2_path) 
 }
 
-#Settings for background colour 
-#st.markdown("""<style>.stApp {background-color: #F6F6EE;  /* Replace with your desired color */}</style>""",
-    #unsafe_allow_html=True)
+st.markdown("""<style>.stApp {background-color: #F6F6EE;  /* Replace with your desired color */}</style>""",
+    unsafe_allow_html=True)
 
 st.title("Empathiser")
 st.caption("TEXT.")
@@ -59,7 +58,6 @@ st.header("Personal data")
 user_name = st.text_input("Enter your full name", key="user_name")
 
 if user_name:
-    pass
     age = st.number_input("Enter your age", min_value=0, max_value=120, step=1, key="age")
     gender = st.selectbox("Select your gender", ["Male", "Female", "Non-binary / Third gender", "Other", "Prefer not to say"], key="gender")
     education = st.selectbox("Select your highest educational level", [
@@ -70,16 +68,15 @@ if user_name:
     st.caption("Press the button to continue.")
 
     if st.button("Submit"):
-        data_storage.save_demographic_data(
-            user_name=user_name,
-            age=age,
-            gender=gender,
-            education=education
-        )
-        st.session_state.user_folder = os.path.join(data_storage.data_collector, user_name)
-
+        user_info = {
+            "user_name": user_name,
+            "age": age,
+            "gender": gender,
+            "education": education
+        }
+        data_storage.store_user_demographics(user_info)
         st.success("Thank you!")
-    
+
     st.header("Let's get to it")
     st.caption("TEXT.")
 

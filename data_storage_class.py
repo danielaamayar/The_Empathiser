@@ -10,6 +10,8 @@ import os
 import wave
 from datetime import datetime
 from typing import Dict, Any, Optional
+from emotion_colours import emotion_colours
+
 
 
 class DataStorage:
@@ -27,13 +29,22 @@ class DataStorage:
             "Gender": gender,
             "Education": education
         }
-        
+         
         filepath = os.path.join(user_folder, "Demographic_data.csv")
         
         df = pd.DataFrame([data])
         df.to_csv(filepath, index=False)
         st.session_state.user_folder = user_folder  
 
+    def store_user_demographics(self, user_info: Dict[str, Any]) -> None:
+        """Store demographics and initialize user folder session."""
+        self.save_demographic_data(
+            user_name=user_info["user_name"],
+            age=user_info["age"],
+            gender=user_info["gender"],
+            education=user_info["education"]
+        )
+    
     def save_slider_responses(self, content_type: str, content_name: str, responses: dict):
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
@@ -54,6 +65,7 @@ class DataStorage:
         
         df = pd.concat([df, pd.DataFrame([data])], ignore_index=True)
         df.to_csv(filepath, index=False)
+
     
     def save_emotion_plot(self, face_image, probabilities, frame_count, folder, colours):
      
@@ -144,7 +156,6 @@ class DataStorage:
             filename = f"{recording_type}_{timestamp}.wav"
             filepath = os.path.join(recordings_dir, filename)
 
-            # ✅ Save directly as WAV without modifying content
             with open(filepath, "wb") as f:
                 f.write(audio_bytes)
 
