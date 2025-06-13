@@ -5,6 +5,12 @@ import streamlit as st
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
+import json
+import os
+import wave
+from datetime import datetime
+from typing import Dict, Any, Optional
+
 
 class DataStorage:
     def __init__(self, data_collector):
@@ -15,7 +21,7 @@ class DataStorage:
         os.makedirs(user_folder, exist_ok=True)
         
         data = {
-            "Timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "Timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "Name": user_name,
             "Age": age,
             "Gender": gender,
@@ -28,8 +34,8 @@ class DataStorage:
         df.to_csv(filepath, index=False)
         st.session_state.user_folder = user_folder  
 
-    def save_slider_responses(self, content_name: str, responses: dict):
-        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    def save_slider_responses(self, content_type: str, content_name: str, responses: dict):
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
         folder_name = content_name.replace(" ", "_")
         folder = os.path.join(st.session_state.user_folder, folder_name)
@@ -79,3 +85,111 @@ class DataStorage:
             df.to_csv(csv_path, mode='a', header=False, index=False)
         else:
             df.to_csv(csv_path, index=False)
+
+    def save_voice_data(
+        self,
+        user_name: str,
+        transcription: str,
+        sentiment: str,
+        scores: Dict[str, float],
+        audio_path: str
+    ) -> Dict[str, str]:
+
+        try:
+            if not all([user_name, isinstance(transcription, str), audio_path]):
+                raise ValueError("Missing required parameters")
+
+            user_folder = os.path.join(self.data_collector, user_name)
+            voice_folder = os.path.join(user_folder, "voice_data")  
+            os.makedirs(voice_folder, exist_ok=True)
+
+            data = {
+                "timestamp": datetime.now().isoformat(),
+                "transcription": transcription,
+                "sentiment": sentiment,
+                "scores": scores,
+                "audio_file": "recording.wav"  
+            }
+
+            json_path = os.path.join(voice_folder, "voice_analysis.json") 
+            with open(json_path, "w", encoding="utf-8") as f:
+                json.dump(data, f, indent=4, ensure_ascii=False)
+
+            saved_audio_path = os.path.join(voice_folder, "recording.wav")
+            if os.path.exists(audio_path):
+                with open(audio_path, "rb") as src, open(saved_audio_path, "wb") as dst:
+                    dst.write(src.read())
+            else:
+                raise FileNotFoundError(f"Source audio file not found: {audio_path}")
+
+            return {
+                "json_path": json_path,
+                "audio_path": saved_audio_path,
+                "voice_folder": voice_folder
+            }
+
+        except Exception as e:
+            st.error(f"Failed to save voice data: {str(e)}")
+            raise
+
+    def save_audio_recording(self, audio_bytes: bytes, recording_type: str) -> Optional[str]:
+        try:
+            if not hasattr(st.session_state, 'user_folder'):
+                raise ValueError("User session not initialized - complete demographic info first")
+
+            recordings_dir = os.path.join(st.session_state.user_folder, "audio_recordings")
+            os.makedirs(recordings_dir, exist_ok=True)
+
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            filename = f"{recording_type}_{timestamp}.wav"
+            filepath = os.path.join(recordings_dir, filename)
+
+            # ✅ Save directly as WAV without modifying content
+            with open(filepath, "wb") as f:
+                f.write(audio_bytes)
+
+            actual_duration = self._verify_audio_duration(filepath)
+            st.write(f"Saved audio duration: {actual_duration:.2f} seconds")
+
+            self._save_recording_metadata(filepath, recording_type)
+
+            return filepath
+
+        except Exception as e:
+            st.error(f"Audio save failed: {str(e)}")
+            return None
+
+    def _verify_audio_duration(self, filepath: str) -> float:
+        with wave.open(filepath, 'rb') as wf:
+            frames = wf.getnframes()
+            rate = wf.getframerate()
+            return frames / float(rate)
+
+    def _save_recording_metadata(self, filepath: str, recording_type: str) -> None:
+        metadata = {
+            "timestamp": datetime.now().isoformat(),
+            "type": recording_type,
+            "filename": os.path.basename(filepath),
+            "path": filepath,
+            "size_bytes": os.path.getsize(filepath),
+            "format": "WAV",
+            "channels": 1,
+            "sample_width": 2,
+            "sample_rate": 16000
+        }
+
+        metadata_path = os.path.join(os.path.dirname(filepath), "recordings_metadata.json")
+        
+        try:
+            existing = []
+            if os.path.exists(metadata_path):
+                with open(metadata_path, 'r') as f:
+                    existing = json.load(f)
+
+            existing.append(metadata)
+
+            with open(metadata_path, 'w') as f:
+                json.dump(existing, f, indent=2)
+
+        except Exception as e:
+            st.warning(f"Could not update recording metadata: {str(e)}")
