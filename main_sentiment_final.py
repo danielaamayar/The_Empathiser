@@ -242,12 +242,12 @@ if user_name:
     if st.session_state.recording_saved and st.session_state.saved_audio_path:
         if st.button("Analyse Recording"):
             try:
-               with st.spinner("Analyzing your voice feedback..."):
+               with st.spinner("Analysing your voice feedback..."):
                 results = voice_analyzer.analyze_recording(
                     audio_path=st.session_state.saved_audio_path,
                     user_folder=st.session_state.user_folder
                     )
-                st.success("Analysis complete!")
+                st.success("Analysis complete! Thank you so much!")
             except Exception as e:
                     st.error(f"Analysis failed: {str(e)}")
 

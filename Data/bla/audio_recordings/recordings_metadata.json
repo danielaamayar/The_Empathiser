@@ -1,0 +1,13 @@
+[
+  {
+    "timestamp": "2025-06-13T14:30:13.091215",
+    "type": "voice_feedback",
+    "filename": "voice_feedback_20250613_143013.wav",
+    "path": "/Users/danielaamayarueda/Documents/GitHub/The_Empathiser/Data/bla/audio_recordings/voice_feedback_20250613_143013.wav",
+    "size_bytes": 1669036,
+    "format": "WAV",
+    "channels": 1,
+    "sample_width": 2,
+    "sample_rate": 16000
+  }
+]
