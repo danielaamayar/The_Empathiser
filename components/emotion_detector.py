@@ -13,7 +13,6 @@ class EmotionDetector:
         self.id2label = AutoConfig.from_pretrained("trpakov/vit-face-expression").id2label
 
     def detect_emotion (self, frame):
-        # Convert OpenCV BGR frame to RGB PIL image
         image = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
         boxes, _ = self.mtcnn.detect(image)
 
