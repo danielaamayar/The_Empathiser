@@ -10,7 +10,6 @@ import os
 import wave
 from datetime import datetime
 from typing import Dict, Any, Optional
-from emotion_colours import emotion_colours
 
 
 
@@ -37,7 +36,6 @@ class DataStorage:
         st.session_state.user_folder = user_folder  
 
     def store_user_demographics(self, user_info: Dict[str, Any]) -> None:
-        """Store demographics and initialize user folder session."""
         self.save_demographic_data(
             user_name=user_info["user_name"],
             age=user_info["age"],
@@ -66,9 +64,25 @@ class DataStorage:
         df = pd.concat([df, pd.DataFrame([data])], ignore_index=True)
         df.to_csv(filepath, index=False)
 
-    
+    # This function created by John Solomon Legara and published in Medium's website creates a plot for each frame and the emotion's prediction https://medium.com/@johnsolomonlegara/frame-by-frame-tracking-emotions-in-videos-with-ai-ee31a1a05ab6 
     def save_emotion_plot(self, face_image, probabilities, frame_count, folder, colours):
-     
+
+        plt.rcParams.update({
+                'font.family': 'Source Sans',        
+                'font.size': 10,                     # Base font size
+                'axes.titleweight': 'bold',          # Title weight
+                'axes.labelweight': 'light',       # Axis label weight
+                'axes.labelsize': 10,                # Axis label size (smaller than base font)
+                'axes.titlesize': 13,                # Title size
+                'figure.facecolor': '#090B0D',       # Whole figure background
+                'axes.facecolor': '#090B0D',         # Plot area background
+                'text.color': 'F6F6EE',             # Default text colour
+                'axes.labelcolor': '#F6F6EE',        # Axis label colour
+                'axes.edgecolor': '#F6F6EE',         # Axes border colour
+                'xtick.color': '#F6F6EE',            # X-axis tick colour
+                'ytick.color': '#F6F6EE',            # Y-axis tick colour
+            })
+            
         palette = [colours[label] for label in probabilities.keys()]
         
         fig, axs = plt.subplots(1, 2, figsize=(10, 5))
@@ -81,7 +95,7 @@ class DataStorage:
                     palette=palette,
                     orient='h')
         axs[1].set_xlabel('Probability (%)')
-        axs[1].set_title('Emotion Probabilities')
+        axs[1].set_title('The Empathiser - Emotions detected')
         axs[1].set_xlim([0, 100])
 
         plot_path = os.path.join(folder, f'frame_{frame_count}.png')
@@ -109,7 +123,7 @@ class DataStorage:
 
         try:
             if not all([user_name, isinstance(transcription, str), audio_path]):
-                raise ValueError("Missing required parameters")
+                raise ValueError("Somethign went wrong.")
 
             user_folder = os.path.join(self.data_collector, user_name)
             voice_folder = os.path.join(user_folder, "voice_data")  
@@ -147,7 +161,7 @@ class DataStorage:
     def save_audio_recording(self, audio_bytes: bytes, recording_type: str) -> Optional[str]:
         try:
             if not hasattr(st.session_state, 'user_folder'):
-                raise ValueError("User session not initialized - complete demographic info first")
+                raise ValueError("Please complete the demographic information.")
 
             recordings_dir = os.path.join(st.session_state.user_folder, "audio_recordings")
             os.makedirs(recordings_dir, exist_ok=True)
@@ -169,7 +183,8 @@ class DataStorage:
         except Exception as e:
             st.error(f"Audio save failed: {str(e)}")
             return None
-
+    
+    #Claude helped create this verification function 
     def _verify_audio_duration(self, filepath: str) -> float:
         with wave.open(filepath, 'rb') as wf:
             frames = wf.getnframes()

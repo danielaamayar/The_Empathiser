@@ -7,7 +7,7 @@ class QuestionnaireManager:
         
     def show_video_questions(self, video_name: str):
         st.subheader(f"Answer Some Questions about {video_name}")
-        
+        st.caption("Please answer the following questions based on the video you just watched. Respond as honestly and accurately as possible according to your personal experience.")
         if f"{video_name}_responses" not in st.session_state:
             st.session_state[f"{video_name}_responses"] = {
                 "sadness": 50,
@@ -52,7 +52,7 @@ class QuestionnaireManager:
 
     def show_news_questions(self, news_name: str, is_positive: bool = True):
         st.subheader(f"Answer Some Questions about {news_name}")
-        
+        st.caption("Please answer the following questions based on the news article you just read.")
         if f"{news_name}_responses" not in st.session_state:
             if is_positive:
                 st.session_state[f"{news_name}_responses"] = {

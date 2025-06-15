@@ -1,30 +1,20 @@
 import streamlit as st
-import torch
-from paths import ProjectPaths
-from session_state_manager import SessionStateManager
+import torch 
 from data_storage_class import DataStorage
 from emotion_detector import EmotionDetector
 from camera_handler import CameraHandler
 from emotion_manager import EmotionSessionManager
-from questionnaire import QuestionnaireManager
-import os
-from user_interaction import UI
 from voice_sentiment import VoiceAnalysis
+from paths import ProjectPaths
+from emotion_colours import emotion_colours as colours
+from questionnaire import QuestionnaireManager
+from session_state_manager import SessionStateManager
+from user_interaction import UI
 
 
-colours = {
-    "angry": "red",
-    "disgust": "green",
-    "fear": "gray",
-    "happy": "yellow",
-    "neutral": "purple",
-    "sad": "blue",
-    "surprise": "orange"
-}
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 paths = ProjectPaths()
 session = SessionStateManager()
-session.init_all()
 data_storage = DataStorage(
     data_collector=str(paths.data_dir)
 )
@@ -37,6 +27,8 @@ session_manager = EmotionSessionManager(
     colours=colours
 )
 questionnaire_manager = QuestionnaireManager(data_storage=data_storage)
+session = SessionStateManager()
+session.init_all()
 user_interaction = UI(session=session, session_manager=session_manager, questionnaire_manager=questionnaire_manager)
 voice_analyzer = VoiceAnalysis(device=device)
 
@@ -51,8 +43,11 @@ content_paths = {
 st.markdown("""<style>.stApp {background-color: #F6F6EE;  /* Replace with your desired color */}</style>""",
     unsafe_allow_html=True)
 
-st.title("Empathiser")
-st.caption("TEXT.")
+st.title("The Empathiser")
+st.caption("Welcome to the Empathiser. You are about to participate in an academic research study focused on emotional responses to environmental content. " \
+"Your participation is entirely voluntary, and you may withdraw at any time without any consequences. All data collected, including facial expression and voice recordings, will be handled confidentially and in accordance with ethical research standards. "
+
+"We appreciate your contribution to this study.")
 st.caption("Before we begin, we will ask you to provide some personal information.")
 st.header("Personal data")
 user_name = st.text_input("Enter your full name", key="user_name")
@@ -78,7 +73,7 @@ if user_name:
         st.success("Thank you!")
 
     st.header("Let's get to it")
-    st.caption("TEXT.")
+    st.caption("You will be shown two short videos and two news articles. Please watch or read them and react as naturally as possible.")
 
     st.write("------------------------------------------------------------------------------")
 
@@ -92,6 +87,7 @@ if user_name:
     st.write("------------------------------------------------------------------------------")
 
     st.subheader("Step 2: Read This News Article")
+    st.caption("You will be shown a short segment presenting information that has appeared in the news. Please engage with the content and react as naturally as possible.")
     st.caption("Please press 'Done' once you have read the article.")
     user_interaction.show_article_step("News 1", content_paths["Article 1"], is_positive=True)
 
@@ -105,17 +101,18 @@ if user_name:
 
     # News article 2 
     st.subheader("Step 4: Read This News Article")
-    st.caption("TEXT.")
-    st.caption("Please press 'Done' once you have read the article.")
+    st.caption("You will be shown a short segment presenting information that has appeared in the news. Please engage with the content and react as naturally as possible.")
     user_interaction.show_news_step_2("News 2", content_paths["Article 2"], is_positive=True)
 
     st.write("------------------------------------------------------------------------------")
     
     # Voice recording 
     st.subheader("Step 5: Voice thoughts")
-    st.caption("Describe your thoughts about what you’ve seen and the message that resonated with you most deeply.")
+    st.caption("Describe your thoughts about what you’ve seen and the messages that resonated with you most deeply.")
     user_interaction.show_voice_input_step(data_storage, voice_analyzer)
+
+    st.caption("Thank you for your participation!")
 
 st.write("------------------------------------------------------------------------------")
     
-st.caption("Thank you for your participation. If you have any questions you can contact us at: igomati@javeriana.edu.co, mariaandreamoreno@gmail.com or danielaamayar@gmail.com")
+st.caption("If you have any questions you can contact us at: igomati@javeriana.edu.co, mariaandreamoreno@gmail.com or danielaamayar@gmail.com")

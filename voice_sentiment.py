@@ -17,6 +17,7 @@ class VoiceAnalysis:
         self.model = AutoModelForSequenceClassification.from_pretrained(model_name).to(self.device)
         self.labels = ['Negative', 'Neutral', 'Positive']
     
+#ChatGPT assisted in writing these exceptions. 
     def transcribe_audio(self, audio_path: str) -> str:
         try:
             with sr.AudioFile(audio_path) as source:
@@ -24,7 +25,7 @@ class VoiceAnalysis:
                 text = self.recognizer.recognize_google(audio_data)
                 return text
         except sr.UnknownValueError:
-            raise Exception("Google Speech Recognition could not understand audio")
+            raise Exception("The Empathiser could not understand the audio.")
         except sr.RequestError as e:
             raise Exception(f"Could not request results from Google Speech Recognition service; {e}")
         except Exception as e:

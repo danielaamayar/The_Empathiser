@@ -51,11 +51,11 @@ class UI:
                     article_text = file.read()
                     st.markdown(article_text)
             except FileNotFoundError:
-                st.error("Article file not found. Please check the path.")
+                st.error("Article file not found.")
 
             self.session_manager.start_session(article_key)
 
-        st.caption("Please press 'Done' once you have read the article.")
+        st.caption("Please go up and press 'Done' once you have read the article.")
 
         if self.session.get(f"answering_{article_key}"):
             self.questionnaire_manager.show_news_questions(article_key, is_positive=is_positive)
