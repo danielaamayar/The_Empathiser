@@ -1,40 +1,56 @@
-# The_Empathiser
-A tool to determine what kind of audiovisual and text content triggers—or doesn't trigger—people's empathy.
+# The Empathiser
 
-The Empathiser tool uses the **PyTorch MTCNN** model for face detection and the **ViT-Face-Expression** model from Hugging Face for emotion recognition. It is built with **Streamlit** for the user interface and relies on common libraries like OpenCV, NumPy, and Matplotlib for video processing and visualization.
+The Empathiser is a research tool designed to explore how different types of audiovisual and written environmental content trigger empathetic responses in users.
 
-# Setup instructions:
+Built with Streamlit, it integrates facial expression recognition and voice sentiment analysis to help researchers capture real-time reactions. 
 
-1. **Install Miniconda or Anaconda**:
-Download and install [Miniconda](https://docs.conda.io/en/latest/miniconda.html) or [Anaconda](https://www.anaconda.com/products/distribution)
+## What It Does
 
-2. **Set Up the `ai4media` Environment**:
+- Detects facial expressions using MTCNN and ViT-Face-Expression (via Hugging Face).
+- Records voice input and performs sentiment analysis.
+- Presents a sequence of emotionally engaging videos and news articles.
+- Collects demographic and emotional data in a structured session flow.
+- Stores and manages user responses securely.
 
-Download the [`ai4media_environment.yml`](https://git.arts.ac.uk/24003330/AI-4-Media-Project-Daniela-Amaya/blob/main/ai4media_environment.yml) file from this repository.
+## Tech Stack
 
-Create the environment:
+- Frontend: Streamlit
+- Face Detection: MTCNN (via PyTorch)
+- Emotion Recognition: ViT-Face-Expression (Hugging Face Transformers)
+- Voice Sentiment: RoBERTa model (Hugging Face)
+- Utilities: OpenCV, NumPy, Matplotlib
+- Session/Data Handling: Custom Python classes and file storage
+
+## Setup Instructions
+Clone this repository:
+
+```bash
+Copy code
+git clone https://github.com/your-username/the_empathiser.git
+cd the_empathiser
+```
+
+Install required Python packages:
 
 ```
-conda env create -f ai4media_environment.yml
-```
-Activate the environment:
-```
-conda activate ai4media
-```
-All dependencies are listed in the `ai4media_environment.yml` file.
-
-Or if you want yo can: 
-
-```
-conda activate ai4media
-```
-```
-pip freeze > requirements.txt
-```
-```
+bash
+Copy code
 pip install -r requirements.txt
 ```
 
-Some transformer files are too large to include in the repository. Download them from this sharepoint folder: https://artslondon-my.sharepoint.com/:f:/g/personal/d_amayarueda0220241_arts_ac_uk/Ei2xHrsRs5RBikI-UHMHMfMBWUtUCMgCq7tCQRZWTw9r0A?e=9MaJ4c 
+🔗 Download Large Model Files
+Some required transformer models are too large to be included in this repo.
+Please download them from this SharePoint folder: https://artslondon-my.sharepoint.com/:f:/g/personal/d_amayarueda0220241_arts_ac_uk/Ei2xHrsRs5RBikI-UHMHMfMBWUtUCMgCq7tCQRZWTw9r0A?e=9MaJ4c 
 
-Disclaimer: I modified the interface's background colour, and it may not perform well in dark mode (e.g., at night). If needed, you can comment out the first line of code where the background colour is set.
+*Interface Note*
+The interface background colour has been customised to a light tone: 
+
+```
+st.markdown("""<style>.stApp {background-color: #F6F6EE;}</style>""", unsafe_allow_html=True)
+```
+
+If you're using dark mode this might cause visibility issues. Feel free to comment out or adjust this line if needed.
+
+## Contact
+If you have questions about the project or encounter issues, feel free to reach out: danielaamayar@gmail.com
+

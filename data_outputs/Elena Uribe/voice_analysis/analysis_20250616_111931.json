@@ -1,0 +1,12 @@
+{
+    "timestamp": "2025-06-16T11:19:31.342872",
+    "audio_file": "voice_feedback_20250616_111917.wav",
+    "transcription": "this is truly amazing I really like the videos and it was amazing to have the chance to see them and I really enjoyed how the cows were playing with each other and how they were using like the balloon and they were like yes changing everything",
+    "sentiment": "Positive",
+    "scores": {
+        "Negative": 0.0017844528192654252,
+        "Neutral": 0.009904592297971249,
+        "Positive": 0.9883108735084534
+    },
+    "analysis_version": "1.0"
+}
