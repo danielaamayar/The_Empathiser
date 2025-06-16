@@ -6,6 +6,7 @@ from typing import Tuple, Dict, Any
 import json
 from datetime import datetime
 
+
 class VoiceAnalysis:
     def __init__(self, device: str = None):
 

@@ -1,16 +1,15 @@
 import streamlit as st
 import torch 
-from Data_storage_class import DataStorage
-from Emotion_detector import EmotionDetector
-from Camera_handler import CameraHandler
-from Emotion_manager import EmotionSessionManager
-from Voice_sentiment import VoiceAnalysis
-from Paths import ProjectPaths
-from Emotion_colours import emotion_colours as colours
-from Questionnaire import QuestionnaireManager
-from Session_state_manager import SessionStateManager
-from User_interaction import UI
-
+from data_storage_class import DataStorage
+from emotion_detector import EmotionDetector
+from camera_handler import CameraHandler
+from emotion_manager import EmotionSessionManager
+from voice_sentiment import VoiceAnalysis
+from paths import ProjectPaths
+from emotion_colours import emotion_colours as colours
+from questionnaire import QuestionnaireManager
+from session_state_manager import SessionStateManager
+from user_interaction import UI
 
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 paths = ProjectPaths()
