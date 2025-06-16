@@ -2,7 +2,7 @@
 
 The Empathiser is a research tool designed to explore how different types of audiovisual and written environmental content trigger empathetic responses in users.
 
-Powered by Streamlit, it combines facial expression recognition with voice sentiment analysis, enabling researchers to capture and analyse emotional reactions in real time.
+It combines facial expression recognition with voice sentiment analysis, enabling researchers to capture and analyse emotional reactions in real time.
 
 ## What It Does
 
