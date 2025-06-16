@@ -2,13 +2,13 @@
 
 The Empathiser is a research tool designed to explore how different types of audiovisual and written environmental content trigger empathetic responses in users.
 
-Built with Streamlit, it integrates facial expression recognition and voice sentiment analysis to help researchers capture real-time reactions. 
+Powered by Streamlit, it combines facial expression recognition with voice sentiment analysis, enabling researchers to capture and analyse emotional reactions in real time.
 
 ## What It Does
 
 - Detects facial expressions using MTCNN and ViT-Face-Expression (via Hugging Face).
 - Records voice input and performs sentiment analysis.
-- Presents a sequence of emotionally engaging videos and news articles.
+- Presents a sequence of videos and news articles.
 - Collects demographic and emotional data in a structured session flow.
 - Stores and manages user responses securely.
 

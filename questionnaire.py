@@ -1,5 +1,5 @@
 import streamlit as st
-from data_storage_class import DataStorage
+from Data_storage_class import DataStorage
 
 class QuestionnaireManager:
     def __init__(self, data_storage: DataStorage):
