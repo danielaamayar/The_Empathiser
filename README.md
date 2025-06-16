@@ -25,7 +25,6 @@ Powered by Streamlit, it combines facial expression recognition with voice senti
 Clone this repository:
 
 ```bash
-Copy code
 git clone https://github.com/your-username/the_empathiser.git
 cd the_empathiser
 ```
@@ -34,7 +33,6 @@ Install required Python packages:
 
 ```
 bash
-Copy code
 pip install -r requirements.txt
 ```
 
