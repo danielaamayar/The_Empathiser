@@ -22,6 +22,7 @@ It combines facial expression recognition with voice sentiment analysis, enablin
 - Session/Data Handling: Custom Python classes and file storage
 
 ## Setup Instructions
+
 Clone this repository:
 
 ```bash
@@ -36,19 +37,37 @@ bash
 pip install -r requirements.txt
 ```
 
-🔗 Download Large Model Files
-Some required transformer models are too large to be included in this repo.
-Please download them from this SharePoint folder: https://artslondon-my.sharepoint.com/:f:/g/personal/d_amayarueda0220241_arts_ac_uk/Ei2xHrsRs5RBikI-UHMHMfMBWUtUCMgCq7tCQRZWTw9r0A?e=9MaJ4c 
+## Download Large Model Files
+Some required transformer models are too large to be included in this repo.Please download them from this [SharePoint folder](https://artslondon-my.sharepoint.com/my?id=%2Fpersonal%2Fd%5Famayarueda0220241%5Farts%5Fac%5Fuk%2FDocuments%2FFiles%20required%20AI%2D4%2Dmedia%20Project&ga=1).
 
-*Interface Note*
-The interface background colour has been customised to a light tone: 
+## Running with Streamlit UI
 
+Launch the interface using:
+
+```streamlit run streamlit_main.py```
+
+This will open the app in your default web browser.
+
+## Data Outputs
+
+Demographic data, self-report responses, facial emotion recognition, and sentiment analysis results are saved in each user’s folder inside the data_outputs folder.
+
+
+## Disclaimers and Acknowledgements
+
+This project was assisted by ChatGPT and Claude for debugging and implementing some specific functions, which are marked in the code.
+
+The ```save_emotion_plot``` function was created by John Solomon Legara and originally published on [Medium](https://medium.com/@johnsolomonlegara/frame-by-frame-tracking-emotions-in-videos-with-ai-ee31a1a05ab6).
+
+## Interface Note
+
+The interface background colour has been customised to a light tone. If you're using dark mode, this might cause visibility issues. Feel free to comment out or adjust this line if needed.
+
+```st.markdown("""<style>.stApp {background-color: #F6F6EE;}</style>""", unsafe_allow_html=True)
 ```
-st.markdown("""<style>.stApp {background-color: #F6F6EE;}</style>""", unsafe_allow_html=True)
-```
-
-If you're using dark mode this might cause visibility issues. Feel free to comment out or adjust this line if needed.
 
 ## Contact
-If you have questions about the project or encounter issues, feel free to reach out: danielaamayar@gmail.com
+
+If you have questions about the project or encounter any issues, feel free to get in touch:
+📧 danielaamayar@gmail.com
 
