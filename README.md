@@ -10,7 +10,7 @@ It combines facial expression recognition with voice sentiment analysis, enablin
 - Records voice input and performs sentiment analysis.
 - Presents a sequence of videos and news articles.
 - Collects demographic and emotional data in a structured session flow.
-- Stores and manages user responses securely.
+- Stores and manages user responses.
 
 ## Tech Stack
 
@@ -38,7 +38,7 @@ pip install -r requirements.txt
 ```
 
 ## Download Large Model Files
-Some required transformer models are too large to be included in this repo.Please download them from this [SharePoint folder](https://artslondon-my.sharepoint.com/my?id=%2Fpersonal%2Fd%5Famayarueda0220241%5Farts%5Fac%5Fuk%2FDocuments%2FFiles%20required%20AI%2D4%2Dmedia%20Project&ga=1).
+Some required transformer models are too large to be included in this repo. Please download them from this [SharePoint folder](https://artslondon-my.sharepoint.com/my?id=%2Fpersonal%2Fd%5Famayarueda0220241%5Farts%5Fac%5Fuk%2FDocuments%2FFiles%20required%20AI%2D4%2Dmedia%20Project&ga=1).
 
 ## Running with Streamlit UI
 
