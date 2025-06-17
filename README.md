@@ -44,7 +44,9 @@ Some required transformer models are too large to be included in this repo. Plea
 
 Launch the interface using:
 
-```streamlit run streamlit_main.py```
+```
+streamlit run streamlit_main.py
+```
 
 This will open the app in your default web browser.
 
