@@ -65,7 +65,8 @@ The ```save_emotion_plot``` function was created by John Solomon Legara and orig
 
 The interface background colour has been customised to a light tone. If you're using dark mode, this might cause visibility issues. Feel free to comment out or adjust this line if needed.
 
-```st.markdown("""<style>.stApp {background-color: #F6F6EE;}</style>""", unsafe_allow_html=True)
+```
+st.markdown("""<style>.stApp {background-color: #F6F6EE;}</style>""", unsafe_allow_html=True)
 ```
 
 ## Contact
